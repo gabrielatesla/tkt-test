@@ -1,4 +1,6 @@
-from costumers.models import CostumerElement, Result, CostumerModel
+from costumers.models import CostumerElement, Result, CostumerModel, CostumerSerializer
+import json
+from django import db
 
 
 def from_union(fs, x):
@@ -20,13 +22,12 @@ class Costumers:
     @staticmethod
     def save(obj):
         try:
-            results = from_union([lambda x: from_list(Result.from_dict, x)], obj.get("results"))
-            costumer = CostumerModel(
+            CostumerModel.objects.get_or_create(
                 name=obj.get("name"),
                 sector=obj.get("sector"),
                 siren=obj.get("siren"),
-                results=results
+                results=json.dumps(obj.get("results"))
             )
-            costumer.save()
+
         except Exception as e:
             raise e

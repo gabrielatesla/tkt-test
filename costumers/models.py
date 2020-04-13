@@ -1,5 +1,6 @@
 from enum import Enum
 from django.db import models
+from rest_framework import serializers
 from typing import Any, List, TypeVar, Callable, Type, cast
 
 
@@ -79,6 +80,13 @@ class CostumerModel(models.Model):
     sector = models.CharField(max_length=50)
     siren = models.IntegerField()
     results = models.TextField(null=True, blank=True)
+
+
+class CostumerSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=200)
+    sector = serializers.CharField(max_length=50)
+    siren = serializers.IntegerField()
+    results = serializers.CharField()
 
 
 class CostumerElement(models.Model):
